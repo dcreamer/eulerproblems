@@ -2,7 +2,7 @@
 import numpy as np
 import random
 
-accomplished=[1,3,5,7,9,12,16,20,25,14,34,29,26,27,36,30,32,2,4,6,8,11,15,21]
+accomplished=[1,3,5,7,9,12,16,20,25,14,34,29,26,27,36,30,32,2,4,6,8,11,15,21,23,35,28,15]
 print(len(accomplished))
 
 # Problem 2
@@ -159,16 +159,59 @@ def amicable_numbers(n):
 
 # Problem 35
 def circ_primes(n):
+	def prime_test(num):
+		num=int(num)
+		for kk in range(2,int(np.sqrt(num))+1):
+			if num%kk==0:
+				return False
+		return True
+
 	def rotate(x):
-		return x[1:]+x[:1]
+		return [x[n:]+x[:n] for n in range(1,len(x))]
+
 	nums=set(range(2,n))
 	for aa in range(2,int(np.sqrt(n))+1):
 		for bb in range(2*aa,n,aa):
 			nums.discard(bb)
 	crumbs=list(nums)
-	x=[]
-	for aa in range(len(crumbs)):
-		word=str(crumbs[aa])
-		x.append(int(rotate(word)))
-	
-circ_primes(100)
+
+	s=[0,2,4,5,6,8]
+	primes=set(['2','5']+[str(p) for p in crumbs if not set(str(p)).intersection(s)])
+	x=sum(all(q in primes for q in rotate(p)) for p in primes)
+	print(x)
+#circ_primes(10**6)
+
+# Problem 23
+def unundant_sums(n):
+	def factors(x):
+		blah=[]
+		for aa in range(1,int(x/2)+1):
+			if x%aa==0:
+				blah.append(aa)
+		return sum(blah)
+	abundant=[]
+	for aa in range(0,n+1):
+		if factors(aa)>aa:
+			abundant.append(aa)
+	print(abundant)
+	nums=set(range(1,n))
+	for aa in range(len(abundant)):
+		for bb in range(len(abundant)):
+			sums=abundant[aa]+abundant[bb]
+			nums.discard(sums)
+	print(sum(nums))
+#unundant_sums(28124)
+
+# Problem 28 
+def num_spiral(n):
+	nums=[1]
+	x=1
+	spirals=n-2
+	for aa in range(1,spirals):
+		for bb in range(0,4):
+			x=x+(2)*aa
+			nums.append(x)
+		if x>spirals**2:
+			break
+	print(sum(nums))
+#num_spiral(1001)
